@@ -1,0 +1,5 @@
+https://www.youtube.com/watch?v=-yabnyUL4-U
+https://fdopen.github.io/opam-repository-mingw/
+
+Add to Path -> C:\OCaml64\home\Mlej\.opam\4.09.0+mingw64c\bin
+Create path variable OCAMLLIB -> C:\OCaml64\home\Mlej\.opam\4.09.0+mingw64c\lib\ocaml

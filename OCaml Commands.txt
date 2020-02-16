@@ -1,0 +1,5 @@
+1. Compile an OCaml file to byte code (object files which are readable by the computer) using OCaml compiler so that the machine can understand
+ocamlc -o tutorial tutorial.ml
+
+2. Run a compiled file 
+ocamlrun tutorial
