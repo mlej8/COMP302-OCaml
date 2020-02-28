@@ -1,0 +1,139 @@
+Why OCaml ? 
+
+Imperative programming language 
+- Deals with objects, everything is an object.
+- Command driven (a lot of commands i.e. setSpeed(), doSomething(), etc.)
+
+Functional programming language
+- Everything is an expression that is being evaluated.
+- Everything in functional programming is boiled down to a value. This makes things much more efficient, the computer doesn't have to understand what does a Car Object means, because everthing is boiled down to a specific value.
+- Support for recursion
+- Support for Pattern matching 
+
+Reasons for pure functional programming
+- No side-effect e.g. update 
+- No control flow
+- Limited sense of computational precedence 
+- Execute computations in parallel.
+- Dataflow architecture (computation is only triggered by arrival of data)
+
+Functional programming is a new way of considering programming and problem solving.
+
+In OCaml, we don't have to use a return keyword, we simply write the return value in the body of the expression. 
+
+In pattern matching, _ is a wildcard character that matches anything.
+
+Every if conditional statement must have then and an else 
+
+cons :: is a list constructor and prepends an element to the beginning of a list
+
+@ stands for "append" which combines two lists.
+
+The ^ symbol is used to append two strings together
+
+list must have consistent types (all elements of the same lists have same type)
+
+In OCaml, it is possible to trace a function using #trace function_name;; to trace the input and the output of a function. Use #untrace function_name to untrace. 
+
+Recursive functions avoid any mutation of any variables (i.e. when  you loop, you modify the value of the index i). We are trying to stay away from mutable variable. 
+
+Call-Stacks
+This stack contains all the function calls that have started but not yet returned. calling a function f pushes an instance of f on the stack. When a call to f finishes, it is popped from the stack.
+These stack-frames store information like the value of local variables and "what is left to do" in the function. 
+Due to recursion, multiple stack-frames may be calls to the same function. 
+
+
+Optimization
+The compiler recognizees that it is unnecessary to keep around a stack-frame if all it does is taking a callee's result and return it
+ML recognizes the tail calls in the compiler and treats them differently:
+- It removes the caller's stack-frame before it makes the call, allowing the callee to reuse the same stack space that the caller was using
+- As efficient as a loop in other languages
+
+
+OCaml types https://ocaml.org/learn/tutorials/data_types_and_matching.html
+Variant types are one of the most useful features of OCaml and also one of the most unusual.
+They let you represent data that may take on multiple different forms, where each form is marked by an explicit tag. 
+As we’ll see, when combined with pattern matching, variants give you a powerful way of representing complex data and of organizing the case-analysis on that information.   
+The basic syntax of a variant type declaration is as follows:  
+
+type <variant> =
+  | <Tag> [ of <type> [* <type>]... ]
+  | <Tag> [ of <type> [* <type>]... ]
+  | ...
+
+# type foo =
+    | Nothing
+    | Int of int
+    | Pair of int * int
+    | String of string;;
+
+type foo = Nothing | Int of int | Pair of int * int | String of string
+
+The keyword "type" defines a new type. The first word after | (i.e. the word in capital case) is called the constructor (similar to ::). 
+It can be called anything, as long as it starts with a capital letter. 
+| means "or" or U (union).
+If the constructor can be used to define a value, it's followed by the "of type" where type is substituted by int, string, etc. and always starts with a lowercase letter. 
+In the above example, Nothing is used as a constant and the other constructors are used with values:
+ 
+Nothing
+Int 3
+Pair (4, 5)
+String "hello"
+...
+
+Note that you use of when writing the type definition, but NOT when writing elements of the type.
+
+Recursive Variants: Variants can be recursive, and one common use for this is to define tree structures. This is where the expressive power of functional languages come into their own:
+
+# type binary_tree =
+    | Leaf of int
+    | Tree of binary_tree * binary_tree;;
+type binary_tree = Leaf of int | Tree of binary_tree * binary_tree
+
+Parametrized Variants: The binary tree in the previous section has integers at each leaf, but what if we wanted to describe the shape of a binary tree, but decide exactly what to store at each leaf node later? We can do this by using a parameterized (or polymorphic) variant, like this:
+
+# type 'a binary_tree =
+    | Leaf of 'a
+    | Tree of 'a binary_tree * 'a binary_tree;;
+type 'a binary_tree = Leaf of 'a | Tree of 'a binary_tree * 'a binary_tree
+
+This is a general type. 
+The specific type which stores integers at each leaf is called int binary_tree. 
+Similarly the specific type which stores strings at each leaf is called string binary_tree. 
+In the next example we type some instances into the top-level and allow the type inference system to show the types for us:
+
+# Leaf "hello";;
+- : string binary_tree = Leaf "hello"
+# Leaf 3.0;;
+- : float binary_tree = Leaf 3.
+
+Notice how the type name is backwards. 
+Compare this to the type names for lists, eg. int list etc.
+In fact it is no coincidence that 'a list is written "backwards" in the same way. 
+Lists are simply parameterized variant types
+
+
+The Unit typeunit — The Unit Value
+The unit type consists of exactly one value, written (). 
+What's the point of such a type? Well, it's used to represent the type of expressions that have "no value", i.e. expressions that are evaluated for a side-effect only.
+The built-in printing functions return type unit, for example; the value of a while or for loop (both of which are expressions, not "statements") is also of type unit. 
+OCaml uses this convention to help catch more type errors.
+If a function returns nothing (void for C and Java programmers), then we write that it returns the unit type.
+
+
+Option type https://caml.inria.fr/pub/docs/manual-ocaml/libref/Option.html
+Option values explicitly indicate the presence or absence of a value.
+
+type 'a t = 'a option = 
+|	None
+|	Some of 'a -> *Some is a special tag*
+The type for option values. Either None or a value Some v.
+You can pattern match on None and Some for any option type.
+
+If 'a is any type, 'a option is a new type containing all the values of 'a together with a special value to indicate that you did not find what you are looking for.
+
+
+Exception
+You can abort a computation by raising an exception 
+Syntax: exception ExceptionName;;
+To raise an exception: raise <exception name>

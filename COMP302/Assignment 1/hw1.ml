@@ -105,8 +105,7 @@ let fast_exp_tests = [
 (* Q4 TODO: Implement tail recursive helper fast_exp_aux. *) 
 let rec fast_exp_aux(base, power, acc) = 
   if base = 0 then 0
-  else 
-  if power = 0 then acc 
+  else if power = 0 then acc 
   else fast_exp_aux(base, power-1, acc*base) 
         
 (* Q4 TODO: Implement fast_exp using fast_exp_aux. *)
