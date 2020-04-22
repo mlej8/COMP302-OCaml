@@ -43,4 +43,3 @@ let acc(comb,f,lo,hi,inc,unit) =
 
 (* The following computes sum of the squares of numbers from 1 to 5 *)
 print_int (acc((fun (n,m) -> n + m), (fun x -> x * x), 1, 5, (fun n -> n + 1), 0));;
-
